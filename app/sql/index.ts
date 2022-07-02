@@ -1,0 +1,1 @@
+export { tableInAllFiled } from './tableInAllFiled'
