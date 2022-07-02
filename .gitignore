@@ -1,0 +1,5 @@
+.pnpm-debug.log
+node_modules
+.idea
+.vscode
+lib/**/*.map
