@@ -21,9 +21,13 @@ class DbConnectService {
       // 保存用户登录信息
       setCurrentDBLoginInfo(bodys)
       // 查询数据
-      const [query] = useQuery<{ tableName: string }[]>(connection)
-      const result = await query(`SELECT tab.TABLE_NAME tableName FROM information_schema.TABLES tab WHERE TABLE_SCHEMA = '${bodys.database}'`)
-      return successResult<{ tableName: string }[]>(result)
+      const [query] = useQuery<{ tableName: string, tableComment: string }[]>(connection)
+      let result = await query(`SELECT tab.TABLE_NAME tableName, tab.TABLE_COMMENT tableComment FROM information_schema.TABLES tab WHERE TABLE_SCHEMA = '${bodys.database}'`)
+
+      // 进行代码格式化
+      result = result.map(({ tableName, tableComment }) => ({ tableName, tableComment: tableComment || tableName }))
+
+      return successResult<{ tableName: string, tableComment: string }[]>(result)
     } catch (err) {
       return errorResult(err)
     } finally {
